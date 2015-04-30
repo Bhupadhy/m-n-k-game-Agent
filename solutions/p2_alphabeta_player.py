@@ -52,7 +52,7 @@ def printCompare(v,v2, comparator):
 #				Also includes alpha beta pruning which keeps a tab on the highest
 #				max utility found and the lowest min utility and if the search
 #				finds a v such that it is less than the alpha value in the min
-#				function then returns that v. Vice versa for beta value.
+#				function then returns that v. Vice versa for beta value
 def miniMax(state):
     v = int(-999999)
     bestAction = 0
