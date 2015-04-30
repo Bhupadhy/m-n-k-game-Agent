@@ -62,7 +62,7 @@ def miniMax(state):
         if v < v2:
             v = v2
             bestAction = action
-    print bestAction
+    #print bestAction
     return bestAction
 
 # Name: minValue
