@@ -57,48 +57,56 @@ class EvaluationPlayer(Player):
         board = state.board
         i = 0
         j = 0
-        
+
         # Check Vertical
         for i in range(n):
+            currentStreak = 0
             for j in range(m):
                 if board[j][i] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
 
         # Check Horizontal
         for j in range(m):
+            currentStreak = 0
             for i in range(n):
                 if board[j][i] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
 
-        # Check Forward Diagonal (Right Half)
+        # Check Forward Diagonal (Left Half)
         for j in range(m):
-            # print "{} {}".format("Diagonal", j)
+            #print "{} {}".format("Diagonal", j)
             d = j
+            currentStreak = 0
             for i in range(j + 1):
                 if i > n - 1:
                     break
-                # print "i{} j{} board{}".format(i, d, board[d][i])
+                #print "i{} j{} board{}".format(i, d, board[d][i])
                 if board[d][i] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
                 if d != 0:
                     d += -1
 
-        # Check Forward Diagonal (Left Half)
+        # Check Forward Diagonal (Right Half)
         for i in range(n):
             d=i
+            currentStreak = 0
+            
             for j in reversed(range(m)):
-
                 if board[j][d] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
@@ -107,13 +115,16 @@ class EvaluationPlayer(Player):
                 else:
                     break
 
+
         # Check Backward Diagonal (Left Half)
         for i in reversed(range(n)):
             d=i
+            currentStreak = 0
             for j in range(m):
 
                 if board[j][d] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
@@ -125,9 +136,11 @@ class EvaluationPlayer(Player):
         # Check Backward Diagonal (Right Half)
         for i in range(n):
             d=i
+            currentStreak = 0
             for j in range(m):
                 if board[d][j] == color:
                     currentStreak += 1
+                    longestStreak = max(longestStreak, currentStreak)
                 elif currentStreak != 0:
                     longestStreak = max(longestStreak, currentStreak)
                     currentStreak = 0
@@ -135,7 +148,7 @@ class EvaluationPlayer(Player):
                     d += 1
                 else:
                     break
-                
+ 
 
 
         return longestStreak/ float(state.K)
