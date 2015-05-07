@@ -65,8 +65,7 @@ class EvaluationPlayer(Player):
                 if board[j][i] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
 
         # Check Horizontal
@@ -76,8 +75,7 @@ class EvaluationPlayer(Player):
                 if board[j][i] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
 
         # Check Forward Diagonal (Left Half)
@@ -92,8 +90,7 @@ class EvaluationPlayer(Player):
                 if board[d][i] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
                 if d != 0:
                     d += -1
@@ -107,8 +104,7 @@ class EvaluationPlayer(Player):
                 if board[j][d] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
                 if d < n - 1:
                     d += 1
@@ -125,8 +121,7 @@ class EvaluationPlayer(Player):
                 if board[j][d] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
                 if d < n - 1:
                     d += 1
@@ -141,8 +136,7 @@ class EvaluationPlayer(Player):
                 if board[d][j] == color:
                     currentStreak += 1
                     longestStreak = max(longestStreak, currentStreak)
-                elif currentStreak != 0:
-                    longestStreak = max(longestStreak, currentStreak)
+                else:
                     currentStreak = 0
                 if d < n - 1:
                     d += 1
