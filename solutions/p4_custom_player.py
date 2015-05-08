@@ -3,8 +3,24 @@ __author__ = 'Sivasubramanian Chandrasegarampillai, Walter Curnow'
 __email__ = 'rchandra@uci.edu,wcurnow@uci.edu'
 
 from assignment2 import Player, State, Action
+import time
 
-a = 0 
+a = 0
+timings = {
+    'evalCalls': 0,
+    'move': (0, 0, 0),
+    'feel_like_thinking': (0, 0, 0),
+    'do_the_magic': (0, 0, 0),
+    'miniMax': (0, 0, 0),
+    'minValue': (0, 0, 0),
+    'maxValue': (0, 0, 0),
+    'evaluate': (0, 0, 0),
+    'evaluate1': (0, 0, 0),
+    'evaluate2': (0, 0, 0),
+    'evaluate3': (0, 0, 0),
+    'evaluate4': (0, 0, 0)
+}
+
 class YourCustomPlayer(Player):
     @property
     def name(self):
@@ -20,6 +36,8 @@ class YourCustomPlayer(Player):
         Returns:
             your next Action instance
         """
+
+        timeTemp = time.time()
         my_move = state.actions()[0]
 
         while not self.is_time_up():
@@ -31,6 +49,9 @@ class YourCustomPlayer(Player):
         # Time's up, return your move
         # You should only do a small amount of work here, less than one second.
         # Otherwise a random move will be played!
+        timings['move'][0] += time.time() - timeTemp
+        timings['move'][1] += 1
+        timings['move'][2] = 1
         return my_move
 
     def feel_like_thinking(self):
@@ -39,6 +60,7 @@ class YourCustomPlayer(Player):
     # min( dLimit, amount of moves left)
     def do_the_magic(self, state):
         global a
+        timeTemp = time.time()
         bestAction = 0
         v = 0
         for depth in range(1,6):
@@ -47,11 +69,19 @@ class YourCustomPlayer(Player):
             if v < result:
                 v = result
                 bestAction = action
-       #print a
+
+        #print a
         #print bestAction
+
+        print a
+        print bestAction
+        timings['do_the_magic'][0] += time.time() - timeTemp
+        timings['do_the_magic'][1] += 1
+        timings['do_the_magic'][2] = 10
         return bestAction
 
     def miniMax(self, state, dLimit):
+        timeTemp = time.time()
         v = int(-999999)
         bestAction = 0
         table = {}
@@ -66,6 +96,9 @@ class YourCustomPlayer(Player):
                 v = v2
                 bestAction = action
         #print bestAction
+        timings['miniMax'][0] += time.time() - timeTemp
+        timings['miniMax'][1] += 1
+        timings['miniMax'][2] = len(state.actions())
         return bestAction
 
     # Name: minValue
@@ -74,6 +107,7 @@ class YourCustomPlayer(Player):
     # Description:  Same as previous min value function but includes alpha/beta pruning
     #               and a transposition table.
     def minValue(self, state, alpha, beta, table, dLimit):
+        timeTemp = time.time()
         dLimit += -1
         if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
@@ -91,8 +125,14 @@ class YourCustomPlayer(Player):
             #printCompare(v,v2,"min")
             v = min(v, v2 )
             if v <= alpha:
+                timings['minValue'][0] += time.time() - timeTemp
+                timings['minValue'][1] += 1
+                timings['minValue'][2] = len(state.actions())
                 return v
             beta = min(beta, v)
+        timings['minValue'][0] += time.time() - timeTemp
+        timings['minValue'][1] += 1
+        timings['minValue'][2] = len(state.actions())
         return v
 
     # Name: maxValue
@@ -101,6 +141,7 @@ class YourCustomPlayer(Player):
     # Description:  Same as previous max value function but includes alpha/beta pruning
     #               and a transposition table.
     def maxValue(self, state, alpha, beta, table, dLimit):
+        timeTemp = time.time()
         dLimit += -1
         if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
@@ -118,8 +159,14 @@ class YourCustomPlayer(Player):
             #printCompare(v,v2,"max")
             v = max(v, v2)
             if v >= beta:
+                timings['maxValue'][0] += time.time() - timeTemp
+                timings['maxValue'][1] += 1
+                timings['maxValue'][2] = len(state.actions())
                 return v
             alpha = max(alpha, v)
+        timings['maxValue'][0] += time.time() - timeTemp
+        timings['maxValue'][1] += 1
+        timings['maxValue'][2] = len(state.actions())
         return v
 
     
@@ -141,6 +188,9 @@ class YourCustomPlayer(Player):
             """
             global a
             a += 1
+            timings['evalCalls'] += 1
+            f = open("timingResults.txt", 'a')
+            timeTemp = time.time()
             longestStreak = 0
             currentStreak = 0
             m = state.M
@@ -240,4 +290,15 @@ class YourCustomPlayer(Player):
                         d += -1
                     else:
                         break
+     
+            if timings['evalCalls'] % 20 == 0:
+                timings['evaluate'][0] += time.time() - timeTemp
+                timings['evaluate'][1] += 1
+                timings['evaluate'][2] = (4 * n*m) + m
+                f.write("***"*5)
+                f.write("Evaluate")
+                f.write("###"*5)
+                for k,v in timings:
+                    f.write(k + ": " + v + " || " + v[0]/v[1])
+                f.write("***"*5)
             return longestStreak/ float(state.K)
