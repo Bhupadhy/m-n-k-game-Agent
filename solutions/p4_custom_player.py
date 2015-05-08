@@ -75,7 +75,7 @@ class YourCustomPlayer(Player):
     #               and a transposition table.
     def minValue(self, state, alpha, beta, table, dLimit):
         dLimit += -1
-        if dLimit == 0 or self.is_time_up():
+        if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
             return self.evaluate(state, self.color)
         v = int(999999)
@@ -102,7 +102,7 @@ class YourCustomPlayer(Player):
     #               and a transposition table.
     def maxValue(self, state, alpha, beta, table, dLimit):
         dLimit += -1
-        if dLimit == 0 or self.is_time_up():
+        if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
             return self.evaluate(state, self.color)
         v = int(-999999)
@@ -185,6 +185,8 @@ class YourCustomPlayer(Player):
                         currentStreak = 0
                     if d != 0:
                         d += -1
+                    else:
+                        break
 
             if longestStreak == k:
                 return longestStreak/ float(state.K)
@@ -223,18 +225,19 @@ class YourCustomPlayer(Player):
 
             if longestStreak == k:
                 return longestStreak/ float(state.K)
+
             # Check Backward Diagonal (Right Half)
-            for i in range(n):
+            for i in reversed(range(m)):
                 d=i
                 currentStreak = 0
-                for j in range(m):
-                    if board[d][j] == self.color:
+                for j in range(n):
+                    if board[j][d] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
                         currentStreak = 0
-                    if d < n - 1:
-                        d += 1
+                    if d != 0:
+                        d += -1
                     else:
                         break
             return longestStreak/ float(state.K)
