@@ -47,8 +47,8 @@ class YourCustomPlayer(Player):
             if v < result:
                 v = result
                 bestAction = action
-        print a
-        print bestAction
+       #print a
+        #print bestAction
         return bestAction
 
     def miniMax(self, state, dLimit):
