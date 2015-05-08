@@ -99,7 +99,6 @@ class EvaluationPlayer(Player):
         for i in range(n):
             d=i
             currentStreak = 0
-            
             for j in reversed(range(m)):
                 if board[j][d] == color:
                     currentStreak += 1

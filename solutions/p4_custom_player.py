@@ -22,20 +22,205 @@ class YourCustomPlayer(Player):
         """
         my_move = state.actions()[0]
 
-        while not self.is_time_up() and self.feel_like_thinking():
+        while not self.is_time_up():
             # Do some thinking here
-            my_move = self.do_the_magic(state)
+            return self.do_the_magic(state)
 
+
+        
         # Time's up, return your move
         # You should only do a small amount of work here, less than one second.
         # Otherwise a random move will be played!
         return my_move
 
     def feel_like_thinking(self):
-        # You can code here how long you want to think perhaps.
+        
         return False
-
+    # min( dLimit, amount of moves left)
     def do_the_magic(self, state):
-        # Do the magic, return the first available move!
-        return state.actions()[0]
+        bestAction = 0
+        v = 0
+        for depth in range(1,10):
+            action = self.miniMax(state, depth)
+            result = self.evaluate(state.result(action), state.to_play.next)
+            if v < result:
+                v = result
+                bestAction = action
+        print bestAction
+        return bestAction
 
+    def miniMax(self, state, dLimit):
+        v = int(-999999)
+        bestAction = 0
+        table = {}
+        i = 0
+        for action in state.actions():
+            #printAction(action,state.result(action))
+            newState = state.result(action)
+            v2 = self.minValue(newState, -999999, 999999, table , dLimit)
+            if v < v2:
+                v = v2
+                bestAction = action
+        #print bestAction
+        return bestAction
+
+    # Name: minValue
+    # Input: state
+    # Output: integer - minValue returns a value from the utility function
+    # Description:  Same as previous min value function but includes alpha/beta pruning
+    #               and a transposition table.
+    def minValue(self, state, alpha, beta, table, dLimit):
+        dLimit += -1
+        if state.is_terminal() or self.is_time_up() or dLimit == 0:
+
+            return int(self.evaluate(state, state.to_play.next))
+        v = int(999999)
+        for action in state.actions():
+            newState = state.result(action)
+            if table.has_key(hash(newState)):
+                v2 = table[hash(newState)]
+            else:
+                v2 = self.maxValue(newState, alpha, beta, table, dLimit)
+                table[hash(newState)] = v2
+            #printCompare(v,v2,"min")
+            v = min(v, v2 )
+            if v <= alpha:
+                return v
+            beta = min(beta, v)
+        return v
+
+    # Name: maxValue
+    # Input: state
+    # Output: integer - maxValue returns a value from the utility function
+    # Description:  Same as previous max value function but includes alpha/beta pruning
+    #               and a transposition table.
+    def maxValue(self, state, alpha, beta, table, dLimit):
+        dLimit += -1
+        if state.is_terminal() or self.is_time_up() or dLimit == 0:
+
+            return int(self.evaluate(state, state.to_play.next))
+        v = int(-999999)
+        for action in state.actions():
+            newState = state.result(action)
+            if table.has_key(hash(newState)):
+                v2 = table[hash(newState)]
+            else:
+                v2 = self.minValue(newState, alpha, beta, table, dLimit)
+                table[hash(newState)] = v2
+            #printCompare(v,v2,"max")
+            v = max(v, v2)
+            if v >= beta:
+                return v
+            alpha = max(alpha, v)
+        return v
+
+        
+    def evaluate(self, state, color):
+            """Evaluates the state for the player with the given stone color.
+
+            This function calculates the length of the longest ``streak'' on the board
+            (of the given stone color) divided by K.  Since the longest streak you can
+            achieve is K, the value returned will be in range [1 / state.K, 1.0].
+            Args:
+                state (State): The state instance for the current board.
+                color (int): The color of the stone for which to calculate the streaks.
+
+            Returns:
+                the evaluation value (float), from 1.0 / state.K (worst) to 1.0 (win).
+            """
+
+            longestStreak = 0
+            currentStreak = 0
+            m = state.M
+            n = state.N
+            board = state.board
+            i = 0
+            j = 0
+
+            # Check Vertical
+            for i in range(n):
+                currentStreak = 0
+                for j in range(m):
+                    if board[j][i] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+
+            # Check Horizontal
+            for j in range(m):
+                currentStreak = 0
+                for i in range(n):
+                    if board[j][i] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+
+            # Check Forward Diagonal (Left Half)
+            for j in range(m):
+                #print "{} {}".format("Diagonal", j)
+                d = j
+                currentStreak = 0
+                for i in range(j + 1):
+                    if i > n - 1:
+                        break
+                    #print "i{} j{} board{}".format(i, d, board[d][i])
+                    if board[d][i] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+                    if d != 0:
+                        d += -1
+
+            # Check Forward Diagonal (Right Half)
+            for i in range(n):
+                d=i
+                currentStreak = 0
+                for j in reversed(range(m)):
+                    if board[j][d] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+                    if d < n - 1:
+                        d += 1
+                    else:
+                        break
+
+
+            # Check Backward Diagonal (Left Half)
+            for i in reversed(range(n)):
+                d=i
+                currentStreak = 0
+                for j in range(m):
+
+                    if board[j][d] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+                    if d < n - 1:
+                        d += 1
+                    else:
+                        break
+
+            # Check Backward Diagonal (Right Half)
+            for i in range(n):
+                d=i
+                currentStreak = 0
+                for j in range(m):
+                    if board[d][j] == self.color:
+                        currentStreak += 1
+                        longestStreak = max(longestStreak, currentStreak)
+                    else:
+                        currentStreak = 0
+                    if d < n - 1:
+                        d += 1
+                    else:
+                        break
+     
+
+
+            return longestStreak/ float(state.K)
