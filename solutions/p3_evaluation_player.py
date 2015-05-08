@@ -36,6 +36,22 @@ class EvaluationPlayer(Player):
         # Return the move with the highest evaluation value
         return best_move
 
+    # def evaluate(self, state, color):
+    #     longestStreak = 0
+    #     currentStreak = 0
+    #     m = state.M
+    #     n = state.N
+    #     board = state.board
+    #     for i in range(m):
+    #         for j in range(n):
+    #             if board[i][j] == self.color and currentStreak == 0:
+    #                 currentStreak = 1
+    #             elif board[i][j] == self.color and currentStreak >= 1:
+    #                 currentStreak += 1
+    #                 longestStreak = max(longestStreak, currentStreak)
+    #             elif
+
+    #     return 0.0
     def evaluate(self, state, color):
         """Evaluates the state for the player with the given stone color.
 

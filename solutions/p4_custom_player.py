@@ -4,7 +4,7 @@ __email__ = 'rchandra@uci.edu,wcurnow@uci.edu'
 
 from assignment2 import Player, State, Action
 
-
+a = 0 
 class YourCustomPlayer(Player):
     @property
     def name(self):
@@ -38,14 +38,16 @@ class YourCustomPlayer(Player):
         return False
     # min( dLimit, amount of moves left)
     def do_the_magic(self, state):
+        global a
         bestAction = 0
         v = 0
-        for depth in range(1,10):
+        for depth in range(1,6):
             action = self.miniMax(state, depth)
             result = self.evaluate(state.result(action), state.to_play.next)
             if v < result:
                 v = result
                 bestAction = action
+        print a
         print bestAction
         return bestAction
 
@@ -59,6 +61,8 @@ class YourCustomPlayer(Player):
             newState = state.result(action)
             v2 = self.minValue(newState, -999999, 999999, table , dLimit)
             if v < v2:
+                if v2 is 1.0:
+                    return v2
                 v = v2
                 bestAction = action
         #print bestAction
@@ -71,9 +75,9 @@ class YourCustomPlayer(Player):
     #               and a transposition table.
     def minValue(self, state, alpha, beta, table, dLimit):
         dLimit += -1
-        if state.is_terminal() or self.is_time_up() or dLimit == 0:
+        if dLimit == 0 or self.is_time_up():
 
-            return int(self.evaluate(state, state.to_play.next))
+            return self.evaluate(state, self.color)
         v = int(999999)
         for action in state.actions():
             newState = state.result(action)
@@ -81,6 +85,8 @@ class YourCustomPlayer(Player):
                 v2 = table[hash(newState)]
             else:
                 v2 = self.maxValue(newState, alpha, beta, table, dLimit)
+                if v2 is 1.0:
+                    return v2
                 table[hash(newState)] = v2
             #printCompare(v,v2,"min")
             v = min(v, v2 )
@@ -96,9 +102,9 @@ class YourCustomPlayer(Player):
     #               and a transposition table.
     def maxValue(self, state, alpha, beta, table, dLimit):
         dLimit += -1
-        if state.is_terminal() or self.is_time_up() or dLimit == 0:
+        if dLimit == 0 or self.is_time_up():
 
-            return int(self.evaluate(state, state.to_play.next))
+            return self.evaluate(state, self.color)
         v = int(-999999)
         for action in state.actions():
             newState = state.result(action)
@@ -106,6 +112,8 @@ class YourCustomPlayer(Player):
                 v2 = table[hash(newState)]
             else:
                 v2 = self.minValue(newState, alpha, beta, table, dLimit)
+                if v2 is 1.0:
+                    return v2
                 table[hash(newState)] = v2
             #printCompare(v,v2,"max")
             v = max(v, v2)
@@ -114,7 +122,10 @@ class YourCustomPlayer(Player):
             alpha = max(alpha, v)
         return v
 
-        
+    
+    # Possible optimizations: If currentStreak = 0 and the position in the board
+    # is at a place where it wont be able to break the longest streak just break out
+    # of loop and go on to next
     def evaluate(self, state, color):
             """Evaluates the state for the player with the given stone color.
 
@@ -128,7 +139,8 @@ class YourCustomPlayer(Player):
             Returns:
                 the evaluation value (float), from 1.0 / state.K (worst) to 1.0 (win).
             """
-
+            global a
+            a += 1
             longestStreak = 0
             currentStreak = 0
             m = state.M
@@ -136,7 +148,7 @@ class YourCustomPlayer(Player):
             board = state.board
             i = 0
             j = 0
-
+            k = state.K
             # Check Vertical
             for i in range(n):
                 currentStreak = 0
@@ -174,6 +186,8 @@ class YourCustomPlayer(Player):
                     if d != 0:
                         d += -1
 
+            if longestStreak == k:
+                return longestStreak/ float(state.K)
             # Check Forward Diagonal (Right Half)
             for i in range(n):
                 d=i
@@ -189,7 +203,8 @@ class YourCustomPlayer(Player):
                     else:
                         break
 
-
+            if longestStreak == k:
+                return longestStreak/ float(state.K)
             # Check Backward Diagonal (Left Half)
             for i in reversed(range(n)):
                 d=i
@@ -206,6 +221,8 @@ class YourCustomPlayer(Player):
                     else:
                         break
 
+            if longestStreak == k:
+                return longestStreak/ float(state.K)
             # Check Backward Diagonal (Right Half)
             for i in range(n):
                 d=i
@@ -220,7 +237,4 @@ class YourCustomPlayer(Player):
                         d += 1
                     else:
                         break
-     
-
-
             return longestStreak/ float(state.K)
