@@ -227,10 +227,10 @@ class YourCustomPlayer(Player):
                 return longestStreak/ float(state.K)
 
             # Check Backward Diagonal (Right Half)
-            for i in reversed(range(m)):
+            for i in reversed(range(n)):
                 d=i
                 currentStreak = 0
-                for j in range(n):
+                for j in range(m):
                     if board[j][d] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
