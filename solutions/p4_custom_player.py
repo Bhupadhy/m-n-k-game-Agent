@@ -8,17 +8,17 @@ import time
 a = 0
 timings = {
     'evalCalls': 0,
-    'move': (0, 0, 0),
-    'feel_like_thinking': (0, 0, 0),
-    'do_the_magic': (0, 0, 0),
-    'miniMax': (0, 0, 0),
-    'minValue': (0, 0, 0),
-    'maxValue': (0, 0, 0),
-    'evaluate': (0, 0, 0),
-    'evaluate1': (0, 0, 0),
-    'evaluate2': (0, 0, 0),
-    'evaluate3': (0, 0, 0),
-    'evaluate4': (0, 0, 0)
+    'move': [0, 0, 0],
+    'feel_like_thinking': [0, 0, 0],
+    'do_the_magic': [0, 0, 0],
+    'miniMax': [0, 0, 0],
+    'minValue': [0, 0, 0],
+    'maxValue': [0, 0, 0],
+    'evaluate': [0, 0, 0],
+    'evaluate1': [0, 0, 0],
+    'evaluate2': [0, 0, 0],
+    'evaluate3': [0, 0, 0],
+    'evaluate4': [0, 0, 0]
 }
 
 class YourCustomPlayer(Player):
