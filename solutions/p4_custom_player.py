@@ -298,7 +298,7 @@ class YourCustomPlayer(Player):
                 f.write("***"*5)
                 f.write("Evaluate")
                 f.write("###"*5)
-                for k,v in timings:
-                    f.write(k + ": " + v + " || " + v[0]/v[1])
+                for k in timings.keys():
+                    f.write(k + ": " + timings[k] + " || " + timings[k][0]/timings[k][1])
                 f.write("***"*5)
             return longestStreak/ float(state.K)
