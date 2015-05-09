@@ -113,7 +113,9 @@ class YourCustomPlayer(Player):
         timeTempMV = time.time()
         dLimit += -1
         if dLimit == 0 or self.is_time_up() or state.is_terminal():
-
+            timings['miniMax'][0] += time.time() - timeTempMV
+            timings['miniMax'][1] += 1
+            timings['miniMax'][2] = len(state.actions())
             return self.evaluate(state, self.color)
         v = int(999999)
         for action in state.actions():
