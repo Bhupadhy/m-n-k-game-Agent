@@ -5,11 +5,11 @@ __email__ = 'rchandra@uci.edu,wcurnow@uci.edu'
 from assignment2 import Player, State, Action
 
 a = 0 
-class PlayerA(Player):
+class PlayerB(Player):
     @property
     def name(self):
         """Returns the name of this agent. Try to make it unique!"""
-        return 'PlayerA'
+        return 'PlayerB'
 
     def move(self, state):
         """Calculates the absolute best move from the given board position using magic.
@@ -40,14 +40,14 @@ class PlayerA(Player):
     # min( dLimit, amount of moves left)
     def do_the_magic(self, state):
         global a
-
+        
         v = 0
         for depth in range(1,6):
             action = self.miniMax(state, depth)
             if self.is_time_up():
                 return action
 
-        #print a
+       #print a
         #print bestAction
         return action
 
@@ -60,9 +60,11 @@ class PlayerA(Player):
             #printAction(action,state.result(action))
             newState = state.result(action)
             v2 = self.minValue(newState, -999999, 999999, table , dLimit)
-            if v < v2:
+            print "Action: {} \n Value: {} Value2: {}".format(action, v2, v)
+            if v <= v2:
                 v = v2
                 bestAction = action
+        print "DONE HERE best move {}".format(bestAction)
         return bestAction
 
     # Name: minValue
@@ -74,7 +76,7 @@ class PlayerA(Player):
         dLimit += -1
         if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
-            return self.evaluate(state, state.to_play.next.color)
+            return self.evaluate(state, self.color)
         v = int(999999)
         for action in state.actions():
             newState = state.result(action)
@@ -82,6 +84,8 @@ class PlayerA(Player):
                 v2 = table[hash(newState)]
             else:
                 v2 = self.maxValue(newState, alpha, beta, table, dLimit)
+                if v2 is 1.0:
+                    return v2
                 table[hash(newState)] = v2
             #printCompare(v,v2,"min")
             v = min(v, v2 )
@@ -99,7 +103,7 @@ class PlayerA(Player):
         dLimit += -1
         if dLimit == 0 or self.is_time_up() or state.is_terminal():
 
-            return self.evaluate(state, state.to_play.color)
+            return self.evaluate(state, self.color)
         v = int(-999999)
         for action in state.actions():
             newState = state.result(action)
@@ -107,6 +111,8 @@ class PlayerA(Player):
                 v2 = table[hash(newState)]
             else:
                 v2 = self.minValue(newState, alpha, beta, table, dLimit)
+                if v2 is 1.0:
+                    return v2
                 table[hash(newState)] = v2
             #printCompare(v,v2,"max")
             v = max(v, v2)
@@ -146,7 +152,7 @@ class PlayerA(Player):
             for i in range(n):
                 currentStreak = 0
                 for j in range(m):
-                    if board[j][i] == color:
+                    if board[j][i] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
@@ -156,7 +162,7 @@ class PlayerA(Player):
             for j in range(m):
                 currentStreak = 0
                 for i in range(n):
-                    if board[j][i] == color:
+                    if board[j][i] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
@@ -171,7 +177,7 @@ class PlayerA(Player):
                     if i > n - 1:
                         break
                     #print "i{} j{} board{}".format(i, d, board[d][i])
-                    if board[d][i] == color:
+                    if board[d][i] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
@@ -188,7 +194,7 @@ class PlayerA(Player):
                 d=i
                 currentStreak = 0
                 for j in reversed(range(m)):
-                    if board[j][d] == color:
+                    if board[j][d] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
@@ -206,7 +212,7 @@ class PlayerA(Player):
                 currentStreak = 0
                 for j in range(m):
 
-                    if board[j][d] == color:
+                    if board[j][d] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
@@ -224,7 +230,7 @@ class PlayerA(Player):
                 d=i
                 currentStreak = 0
                 for j in range(m):
-                    if board[j][d] == color:
+                    if board[j][d] == self.color:
                         currentStreak += 1
                         longestStreak = max(longestStreak, currentStreak)
                     else:
