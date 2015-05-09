@@ -295,13 +295,13 @@ class YourCustomPlayer(Player):
                 timings['evaluate'][0] += time.time() - timeTemp
                 timings['evaluate'][1] += 1
                 timings['evaluate'][2] = (4 * n*m) + m
-                f.write("***"*5)
-                f.write("Evaluate")
-                f.write("###"*5)
+                f.write("***"*5 + "\n")
+                f.write("Evaluate\n")
+                f.write("###"*5 + "\n")
                 for k in timings.keys():
                     if k is not "evalCalls":
-                        f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]))
-                f.write("***"*5)
+                        f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]) + "\n")
+                f.write("***"*5 + "\n")
 
             f.close()
             return longestStreak/ float(state.K)
