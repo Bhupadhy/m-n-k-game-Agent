@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5beabd25-70bf-4cea-b41c-b0901091e003" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/solutions/p4_custom_player.py" afterPath="$PROJECT_DIR$/solutions/p4_custom_player.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="m-n-k-game-Agent.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="p4_custom_player.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/solutions/p4_custom_player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.84447676" vertical-offset="3934" max-vertical-offset="4635">
-              <caret line="301" column="115" selection-start-line="301" selection-start-column="115" selection-end-line="301" selection-end-column="115" />
+            <state vertical-scroll-proportion="0.8255814" vertical-offset="3947" max-vertical-offset="4650">
+              <caret line="301" column="35" selection-start-line="301" selection-start-column="35" selection-end-line="301" selection-end-column="35" />
               <folding>
                 <element signature="e#139#184#0" expanded="true" />
               </folding>
@@ -413,8 +414,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/solutions/p4_custom_player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84447676" vertical-offset="3934" max-vertical-offset="4635">
-          <caret line="301" column="115" selection-start-line="301" selection-start-column="115" selection-end-line="301" selection-end-column="115" />
+        <state vertical-scroll-proportion="0.8255814" vertical-offset="3947" max-vertical-offset="4650">
+          <caret line="301" column="35" selection-start-line="301" selection-start-column="35" selection-end-line="301" selection-end-column="35" />
           <folding>
             <element signature="e#139#184#0" expanded="true" />
           </folding>
