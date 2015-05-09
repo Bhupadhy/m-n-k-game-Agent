@@ -302,4 +302,6 @@ class YourCustomPlayer(Player):
                     if k is not "evalCalls":
                         f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]))
                 f.write("***"*5)
+
+            f.close()
             return longestStreak/ float(state.K)
