@@ -81,6 +81,7 @@ class YourCustomPlayer(Player):
         return bestAction
 
     def miniMax(self, state, dLimit):
+        f = open("timingResults.txt", "a")
         timeTempMiniMax = time.time()
         v = int(-999999)
         bestAction = 0
@@ -95,6 +96,15 @@ class YourCustomPlayer(Player):
                     timings['miniMax'][0] += time.time() - timeTempMiniMax
                     timings['miniMax'][1] += 1
                     timings['miniMax'][2] = len(state.actions())
+                    if timings['evalCalls'] % 20 == 0:
+                        f.write("***"*5 + "\n")
+                        f.write("Evaluate\n")
+                        f.write("###"*5 + "\n")
+                        for k in timings.keys():
+                            if k is not "evalCalls":
+                                f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]) + "\n")
+                        f.write("***"*5 + "\n")
+                    f.close()
                     return v2
                 v = v2
                 bestAction = action
@@ -102,6 +112,15 @@ class YourCustomPlayer(Player):
         timings['miniMax'][0] += time.time() - timeTempMiniMax
         timings['miniMax'][1] += 1
         timings['miniMax'][2] = len(state.actions())
+        if timings['evalCalls'] % 20 == 0:
+            f.write("***"*5 + "\n")
+            f.write("Evaluate\n")
+            f.write("###"*5 + "\n")
+            for k in timings.keys():
+                if k is not "evalCalls":
+                    f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]) + "\n")
+            f.write("***"*5 + "\n")
+        f.close()
         return bestAction
 
     # Name: minValue
@@ -299,14 +318,4 @@ class YourCustomPlayer(Player):
             timings['evaluate'][0] += time.time() - timeTempEvaluate
             timings['evaluate'][1] += 1
             timings['evaluate'][2] = (4 * n*m) + m
-            if timings['evalCalls'] % 20 == 0:
-                f.write("***"*5 + "\n")
-                f.write("Evaluate\n")
-                f.write("###"*5 + "\n")
-                for k in timings.keys():
-                    if k is not "evalCalls":
-                        f.write(k + ": " + str(timings[k][0]) + " | " + str(timings[k][1]) + " | " + str(timings[k][2]) + "\n")
-                f.write("***"*5 + "\n")
-
-            f.close()
             return longestStreak/ float(state.K)
