@@ -5,6 +5,8 @@ __email__ = 'rchandra@uci.edu,wcurnow@uci.edu'
 from assignment2 import Player, State, Action
 import time
 
+doTimings = True
+
 a = 0
 timings = {
     'evalCalls': 0,
@@ -96,7 +98,7 @@ class YourCustomPlayer(Player):
                     timings['miniMax'][0] += time.time() - timeTempMiniMax
                     timings['miniMax'][1] += 1
                     timings['miniMax'][2] = len(state.actions())
-                    if timings['evalCalls'] % 20 == 0:
+                    if timings['evalCalls'] % 20 == 0 and doTimings:
                         f.write("***"*5 + "\n")
                         f.write("Evaluate\n")
                         f.write("###"*5 + "\n")
@@ -112,7 +114,7 @@ class YourCustomPlayer(Player):
         timings['miniMax'][0] += time.time() - timeTempMiniMax
         timings['miniMax'][1] += 1
         timings['miniMax'][2] = len(state.actions())
-        if timings['evalCalls'] % 20 == 0:
+        if timings['evalCalls'] % 20 == 0 and doTimings:
             f.write("***"*5 + "\n")
             f.write("Evaluate\n")
             f.write("###"*5 + "\n")
