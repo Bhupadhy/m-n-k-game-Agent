@@ -189,8 +189,6 @@ class YourCustomPlayer(Player):
             global a
             a += 1
             timings['evalCalls'] += 1
-            f = open("timingResults.txt", 'w')
-            f.close()
             f = open("timingResults.txt", 'a')
             timeTempEvaluate = time.time()
             longestStreak = 0
