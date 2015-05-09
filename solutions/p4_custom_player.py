@@ -92,6 +92,9 @@ class YourCustomPlayer(Player):
             v2 = self.minValue(newState, -999999, 999999, table , dLimit)
             if v < v2:
                 if v2 is 1.0:
+                    timings['miniMax'][0] += time.time() - timeTempMiniMax
+                    timings['miniMax'][1] += 1
+                    timings['miniMax'][2] = len(state.actions())
                     return v2
                 v = v2
                 bestAction = action
